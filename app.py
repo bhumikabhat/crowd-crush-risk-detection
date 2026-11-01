@@ -151,11 +151,18 @@ def tab_live():
     with st.sidebar:
         st.header("Simulation parameters")
         door_w   = st.slider("Door width (m)",   min_value=0.8, max_value=2.5,
-                             value=1.0, step=0.1)
+                             value=1.2, step=0.1)
         n_agents = st.slider("Number of agents", min_value=60,  max_value=200,
-                             value=180, step=10)
-        seed     = st.selectbox("Seed", [0, 1, 2, 3], index=0)
-        run_btn  = st.button("Run simulation", type="primary", use_container_width=True)
+                             value=140, step=10)
+        _SEED_LABELS = {
+            "0 (train)": 0,
+            "1 (train)": 1,
+            "2 (held-out test)": 2,
+            "3 (held-out test)": 3,
+        }
+        seed_label = st.selectbox("Seed", list(_SEED_LABELS.keys()), index=3)
+        seed       = _SEED_LABELS[seed_label]
+        run_btn  = st.button("Run simulation", type="primary", width='stretch')
 
     if run_btn or "sim_result" not in st.session_state:
         with st.spinner("Running simulation…"):
@@ -190,7 +197,7 @@ def tab_live():
     with col_frame:
         jpg = sim["frames_jpg"][idx]
         if jpg:
-            st.image(jpg, caption=f"t = {t[idx]:.1f} s", use_container_width=True)
+            st.image(jpg, caption=f"t = {t[idx]:.1f} s", width='stretch')
 
     with col_info:
         st.subheader("Sensor readings")
@@ -286,7 +293,7 @@ def tab_live():
     )
     layers.append(cur_rule)
 
-    st.altair_chart(alt.layer(*layers).properties(height=260), use_container_width=True)
+    st.altair_chart(alt.layer(*layers).properties(height=260), width='stretch')
 
     # Summary text line
     def _fmt_time(lst, label="none"):
@@ -310,27 +317,27 @@ def tab_results():
     st.header("Evaluation results")
     st.caption(
         "Simulated crowds (JuPedSim). 120 runs. "
-        "Gain is modest; repeated-split ranges shown above."
+        "Gain is modest; repeated-split ranges shown below."
     )
 
     # results.csv
     if os.path.exists("data/results.csv"):
         st.subheader("Test-set results (fixed split: train seeds 0-1, test seeds 2-3)")
-        st.dataframe(pd.read_csv("data/results.csv").round(3), use_container_width=True)
+        st.dataframe(pd.read_csv("data/results.csv").round(3), width='stretch')
     else:
         st.warning("data/results.csv not found — run `python -m eval.run_eval` first.")
 
     # operating curves
     if os.path.exists("data/operating_curves.png"):
         st.subheader("Operating curves (test set)")
-        st.image("data/operating_curves.png", use_container_width=True)
+        st.image("data/operating_curves.png", width='stretch')
     else:
         st.warning("data/operating_curves.png not found.")
 
     # repeat_summary.csv
     if os.path.exists("data/repeat_summary.csv"):
         st.subheader("Stability across 200 random + 6 seed splits")
-        st.dataframe(pd.read_csv("data/repeat_summary.csv").round(3), use_container_width=True)
+        st.dataframe(pd.read_csv("data/repeat_summary.csv").round(3), width='stretch')
     else:
         st.warning("data/repeat_summary.csv not found — run `python -m eval.repeat_eval` first.")
 
