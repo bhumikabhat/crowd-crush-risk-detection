@@ -1,0 +1,11 @@
+altair==6.3.0
+jupedsim==1.4.2
+matplotlib==3.11.2
+numpy==2.5.4
+opencv-python-headless==5.0.0.93
+pandas==3.1.0
+psutil>=5.9
+scikit-learn==1.9.1
+scipy==1.18.1
+shapely==2.2.0
+streamlit==1.66.1
