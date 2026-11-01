@@ -1,0 +1,4 @@
+resolution,frame_w,frame_h,n_frames,mean_latency_ms,p95_latency_ms,fps_achieved,t_event_sim_s,t_first_score_above_s,t_first_alert_sim_s,score_leads_event_by_s,alert_leads_event_by_s,gate_hold_s,wall_event_to_alert_ms,cpu_pct,mem_rss_mb,os,python,cpu_model,cpu_cores_logical,cpu_cores_physical,ram_gb
+native,720,270,600,2.199,2.578,454.7,28.8,21.1,24.1,7.7,4.7,3.0,109.7,98.3,0.2,Windows 11,3.13.7,"Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",20,14,25.5
+640x480,640,480,600,3.448,3.97,290.0,28.8,18.3,21.3,10.5,7.5,3.0,269.0,98.2,0.8,Windows 11,3.13.7,"Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",20,14,25.5
+1280x720,1280,720,600,11.226,13.175,89.1,28.8,18.3,21.3,10.5,7.5,3.0,831.8,96.5,0.7,Windows 11,3.13.7,"Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",20,14,25.5
