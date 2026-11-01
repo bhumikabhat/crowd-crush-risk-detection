@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Large data files – do not commit
+data/real/trajectories_txt.zip
+data/real/trajectories_txt/
+data/real/videos.zip
+data/real/videos/
+*.zip
+*.mp4
+*.avi
+*.mov
+
+# Generated / cached data outputs (keep CSVs and PNGs, exclude raw traj)
+# Uncomment below if you also want to skip generated CSVs:
+# data/repeat_results.csv
+# data/real/features_real.csv
+
+# IDE / OS
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/

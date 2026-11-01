@@ -1,0 +1,29 @@
+splits,method,metric,mean,lo95,hi95
+seed,density-only,detect_rate,0.747,0.524,0.875
+seed,density-only,missed,6.5,3.125,12.375
+seed,density-only,mean_lead_s,2.971,2.421,3.328
+seed,density-only,false_alarms_per_hour,9.136,5.82,10.419
+seed,flow-aware,detect_rate,0.876,0.841,0.92
+seed,flow-aware,missed,3.167,2.0,4.0
+seed,flow-aware,mean_lead_s,4.071,3.547,4.678
+seed,flow-aware,false_alarms_per_hour,9.387,7.697,10.419
+seed,flow-aware minus density-only,detect_rate,0.129,0.045,0.322
+seed,share of splits flow-aware better,detect_rate,1.0,,
+seed,flow-aware minus density-only,missed,-3.333,-8.375,-1.125
+seed,flow-aware minus density-only,mean_lead_s,1.1,0.78,1.685
+seed,share of splits flow-aware better,mean_lead_s,1.0,,
+seed,flow-aware minus density-only,false_alarms_per_hour,0.25,-2.722,4.036
+random,density-only,detect_rate,0.68,0.363,0.957
+random,density-only,missed,8.355,1.0,17.025
+random,density-only,mean_lead_s,2.984,1.357,4.865
+random,density-only,false_alarms_per_hour,9.079,2.253,15.77
+random,flow-aware,detect_rate,0.813,0.551,0.96
+random,flow-aware,missed,4.87,1.0,12.0
+random,flow-aware,mean_lead_s,4.012,2.483,5.462
+random,flow-aware,false_alarms_per_hour,9.552,2.253,17.272
+random,flow-aware minus density-only,detect_rate,0.133,-0.116,0.462
+random,share of splits flow-aware better,detect_rate,0.76,,
+random,flow-aware minus density-only,missed,-3.485,-12.0,3.0
+random,flow-aware minus density-only,mean_lead_s,1.028,-0.247,2.383
+random,share of splits flow-aware better,mean_lead_s,0.945,,
+random,flow-aware minus density-only,false_alarms_per_hour,0.473,-6.026,6.758
