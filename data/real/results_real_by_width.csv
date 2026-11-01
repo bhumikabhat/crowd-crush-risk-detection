@@ -1,0 +1,11 @@
+door_w,n_runs,n_events,method,detected,mean_lead_s,fa_per_h
+1.2,8,2,density-only,0,,31.79
+1.2,8,2,flow-aware,0,,143.06
+2.3,4,1,density-only,0,,0.0
+2.3,4,1,flow-aware,0,,0.0
+3.4,4,1,density-only,0,,0.0
+3.4,4,1,flow-aware,0,,0.0
+4.5,4,0,density-only,0,,24.0
+4.5,4,0,flow-aware,0,,0.0
+5.6,4,1,density-only,0,,14.75
+5.6,4,1,flow-aware,0,,0.0
