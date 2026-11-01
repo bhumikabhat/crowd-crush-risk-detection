@@ -218,82 +218,52 @@ def tab_live():
                 f"&ensp; score {scores[idx]:.3f} / thr {thr}"
             )
 
-    # Score chart
+    # ── Score chart (matplotlib — avoids Altair layer/scale conflicts) ─────────
     st.subheader("Risk scores over time")
-    chart_df = pd.DataFrame({
-        "density-only": sc_den,
-        "flow-aware":   sc_flow,
-        "thr_density":  THR_DENSITY,
-        "thr_flow":     THR_FLOW,
-    }, index=t)
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
 
-    import altair as alt
+    COL_DEN  = "#4c72b0"   # blue   — density-only
+    COL_FLOW = "#dd8452"   # orange — flow-aware
 
-    base = alt.Chart(chart_df.reset_index().rename(columns={"index": "t"}))
+    fig, ax = plt.subplots(figsize=(10, 2.8))
 
-    # Melt scores for colour encoding
-    scores_long = chart_df[["density-only", "flow-aware"]].reset_index()
-    scores_long = scores_long.rename(columns={"index": "t"})
-    scores_long = scores_long.melt("t", var_name="method", value_name="score")
+    # score lines
+    ax.plot(t, sc_den,  color=COL_DEN,  linewidth=1.5, label="density-only")
+    ax.plot(t, sc_flow, color=COL_FLOW, linewidth=1.5, label="flow-aware")
 
-    line_chart = (
-        alt.Chart(scores_long)
-        .mark_line()
-        .encode(
-            x=alt.X("t:Q", title="Time (s)"),
-            y=alt.Y("score:Q", title="Score", scale=alt.Scale(domain=[0, 1])),
-            color=alt.Color("method:N"),
-            tooltip=["t:Q", "method:N", alt.Tooltip("score:Q", format=".3f")],
-        )
-    )
+    # threshold dashes
+    ax.axhline(THR_DENSITY, color=COL_DEN,  linestyle="--", linewidth=1.0,
+               alpha=0.7, label=f"thr density ({THR_DENSITY})")
+    ax.axhline(THR_FLOW,    color=COL_FLOW, linestyle="--", linewidth=1.0,
+               alpha=0.7, label=f"thr flow ({THR_FLOW})")
 
-    # Threshold rules
-    rules_data = pd.DataFrame([
-        {"thr": THR_DENSITY, "method": "density-only thr"},
-        {"thr": THR_FLOW,    "method": "flow-aware thr"},
-    ])
-    thr_rules = (
-        alt.Chart(rules_data)
-        .mark_rule(strokeDash=[4, 4], opacity=0.6)
-        .encode(y="thr:Q", color=alt.Color("method:N", legend=None))
-    )
-
-    # Alert vertical rules
-    alert_rows = []
-    for a_t in alerts_den:
-        alert_rows.append({"t": a_t, "method": "density-only alert"})
-    for a_t in alerts_flow:
-        alert_rows.append({"t": a_t, "method": "flow-aware alert"})
+    # danger event vertical line
     if not np.isnan(t_event):
-        alert_rows.append({"t": float(t_event), "method": "danger event"})
+        ax.axvline(float(t_event), color="#c44e52", linewidth=2.0,
+                   linestyle="-", label=f"danger t={t_event:.1f}s")
 
-    layers = [line_chart, thr_rules]
-    if alert_rows:
-        alert_df = pd.DataFrame(alert_rows)
-        vert = (
-            alt.Chart(alert_df)
-            .mark_rule(strokeWidth=2)
-            .encode(
-                x="t:Q",
-                color=alt.Color("method:N", scale=alt.Scale(
-                    domain=["density-only alert", "flow-aware alert", "danger event"],
-                    range=["#dd8452", "#4c72b0", "#c44e52"],
-                )),
-                tooltip=["t:Q", "method:N"],
-            )
-        )
-        layers.append(vert)
+    # alert markers
+    for a_t in alerts_den:
+        ax.axvline(a_t, color=COL_DEN,  linewidth=1.5, linestyle=":",
+                   alpha=0.9, label=f"density alert t={a_t:.1f}s")
+    for a_t in alerts_flow:
+        ax.axvline(a_t, color=COL_FLOW, linewidth=1.5, linestyle=":",
+                   alpha=0.9, label=f"flow alert t={a_t:.1f}s")
 
-    # Current-time marker
-    cur_df = pd.DataFrame({"t": [float(t[idx])]})
-    cur_rule = (
-        alt.Chart(cur_df)
-        .mark_rule(color="gray", strokeDash=[2, 2], opacity=0.7)
-        .encode(x="t:Q")
-    )
-    layers.append(cur_rule)
+    # current-time cursor
+    ax.axvline(float(t[idx]), color="gray", linewidth=1.0, linestyle="--", alpha=0.6)
 
-    st.altair_chart(alt.layer(*layers).properties(height=260), width='stretch')
+    ax.set_xlim(float(t[0]), float(t[-1]))
+    ax.set_ylim(0, 1)
+    ax.set_xlabel("Time (s)")
+    ax.set_ylabel("Score")
+    ax.legend(loc="upper left", fontsize=7, ncol=3)
+    ax.grid(axis="y", alpha=0.25)
+    fig.tight_layout()
+    st.pyplot(fig, use_container_width=True)
+    plt.close(fig)
 
     # Summary text line
     def _fmt_time(lst, label="none"):
